@@ -5,10 +5,19 @@ interface ReturnRequestType {
   message: string;
 }
 
+interface retuerGetOtp {
+  statusCode: number,
+  data: {
+    message: string,
+    expiresIn: number,
+    phoneNumber:string,
+  },
+}
+
 export function getOpt(data: {
   phoneNumber: string;
-}): Promise<AxiosResponse<ReturnRequestType>> {
-  return http.post<ReturnRequestType>("/user/get-otp", data);
+}) {
+  return http.post<retuerGetOtp>("/user/get-otp", data).then(({data})=>data.data);
 }
 export function checkOpt(data: {
   otp: string;
