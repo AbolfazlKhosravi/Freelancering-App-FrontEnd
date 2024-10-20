@@ -1,27 +1,43 @@
-import { AxiosResponse } from "axios";
 import http from "./httpServices";
 
-interface ReturnRequestType {
-  message: string;
-}
-
-interface retuerGetOtp {
-  statusCode: number,
-  data: {
-    message: string,
-    expiresIn: number,
-    phoneNumber:string,
-  },
-}
-
-export function getOpt(data: {
+export interface UserType {
+  id: string;
+  name: string;
+  avatar: string;
+  biography: string;
+  email: string;
   phoneNumber: string;
-}) {
-  return http.post<retuerGetOtp>("/user/get-otp", data).then(({data})=>data.data);
+  password: string;
+  resetLink: string;
+  isVerifiedPhoneNumber: 0 | 1;
+  isActive: 0 | 1;
+  status: 0 | 1 | 2;
+  createdAt: Date;
+  updatedAt: Date;
 }
-export function checkOpt(data: {
-  otp: string;
-}): Promise<AxiosResponse<ReturnRequestType>> {
-  return http.post<ReturnRequestType>("/user/check-otp", data);
+export interface returnGetOtp {
+  statusCode: number;
+  data: {
+    message: string;
+    expiresIn: number;
+    phoneNumber: string;
+  };
+}
+interface returnCheckOtp {
+  statusCode: number;
+  data: {
+    message: string;
+    user: UserType;
+  };
 }
 
+export function getOpt(data: { phoneNumber: string }) {
+  return http
+    .post<returnGetOtp>("/user/get-otp", data)
+    .then(({ data }) => data.data);
+}
+export function checkOpt(data: { otp: string; phoneNumber: string }) {
+  return http
+    .post<returnCheckOtp>("/user/check-otp", data)
+    .then(({ data }) => data.data);
+}
