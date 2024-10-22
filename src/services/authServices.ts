@@ -15,18 +15,18 @@ export interface UserType {
   createdAt: Date;
   updatedAt: Date;
 }
-export interface UserFullInfo  {
-  user:UserType
-  otp:{
+export interface UserFullInfo {
+  user: UserType;
+  otp: {
     id: string;
     code: number;
     expiresIn: Date;
-  }
-  roles : {
-    id:number
-    title:string
-    user_id:string
-  }[]
+  };
+  roles: {
+    id: number;
+    title: string;
+    user_id: string;
+  }[];
 }
 export interface ReturnGetOtp {
   statusCode: number;
@@ -52,6 +52,13 @@ interface ReturnCompleteProfile {
   };
 }
 
+interface ReturnGetUser {
+  statusCode: number;
+  data: {
+    user: UserFullInfo;
+  };
+}
+
 export function getOpt(data: { phoneNumber: string }) {
   return http
     .post<ReturnGetOtp>("/user/get-otp", data)
@@ -63,8 +70,15 @@ export function checkOpt(data: { otp: string; phoneNumber: string }) {
     .then(({ data }) => data.data);
 }
 
-export function completeProfile(data:{name:string,email:string,role:number}) {
+export function completeProfile(data: {
+  name: string;
+  email: string;
+  role: number;
+}) {
   return http
     .post<ReturnCompleteProfile>("/user/complete-profile", data)
     .then(({ data }) => data.data);
+}
+export function getUser() {
+  return http.get<ReturnGetUser>("/user/profile").then(({ data }) => data.data);
 }
