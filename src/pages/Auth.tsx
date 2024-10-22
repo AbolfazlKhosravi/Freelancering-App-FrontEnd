@@ -1,4 +1,4 @@
-import AuthContanir from "../features/Authentication/AuthContanir";
+import AuthContanir from "../features/Authentication/AuthContainer";
 
 function Auth() {
   return (

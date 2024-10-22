@@ -39,17 +39,23 @@ function ChaekOTPForm({
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { message, user } = await mutateAsync({
+      const { message, userFullInfo } = await mutateAsync({
         otp,
         phoneNumber: phoneNumber.trim(),
       });
+      const {user}=userFullInfo
       toast.success(message);
-      if (user.isActive) {
+      
+      if (!user.isActive) return navigate("/complete-profile");
+      if (user.status !== 2) {
         navigate("/");
-      } else {
-        navigate("/complete-profile");
+        toast("پروفایل شما در انتظار تایید است", { icon: "👏" });
+        return;
       }
-      navigate("/");
+      userFullInfo.roles.forEach(role =>{
+        if (role.title === "OWNER") return navigate("/owner");
+        if (role.title === "FREELANCER") return navigate("/freelancer");
+      })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);
