@@ -1,13 +1,14 @@
 import { HiOutlineX } from "react-icons/hi";
+import useOutsideClick from "./useOutsideClick";
 // import useOutsideClick from "../hooks/useOutsideClick.js";
 interface Modal {
-  open:boolean
-  onClose: () => void
-  title: string
+  open: boolean;
+  onClose: () => void;
+  title: string;
   children: React.ReactNode;
 }
-function Modal({ open, onClose, title, children }:Modal) {
-  // const ref = useOutsideClick(onClose);
+function Modal({ open, onClose, title, children }: Modal) {
+  const ref = useOutsideClick(onClose);
   if (!open) return;
   return (
     <div
@@ -15,7 +16,7 @@ function Modal({ open, onClose, title, children }:Modal) {
          w-full h-screen bg-secondary-800 bg-opacity-30 z-50"
     >
       <div
-        // ref={ref}
+        ref={ref}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
       rounded-lg bg-secondary-0 p-4 shadow-lg transition-all duration-500 ease-out
       w-[calc(100vw-2rem)] md:max-w-lg max-h-[calc(100vh-2rem)] overflow-y-auto"
