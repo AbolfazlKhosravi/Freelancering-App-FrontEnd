@@ -1,10 +1,19 @@
+import Loading from "./Loading";
+
 interface ConfirmDelete {
-  resourceName:string
-  onClose: () => void
-  disabled: boolean
-  onConfirm: () => void
+  resourceName: string;
+  onClose: () => void;
+  disabled: boolean;
+  onConfirm: () => void;
+  ispending?: boolean;
 }
-function ConfirmDelete({ resourceName, onClose, disabled, onConfirm }:ConfirmDelete) {
+function ConfirmDelete({
+  resourceName,
+  onClose,
+  disabled,
+  onConfirm,
+  ispending = false,
+}: ConfirmDelete) {
   return (
     <div>
       <h2 className="font-bold text-base mb-8 text-secondary-700">
@@ -18,13 +27,17 @@ function ConfirmDelete({ resourceName, onClose, disabled, onConfirm }:ConfirmDel
         >
           لغو
         </button>
-        <button
-          onClick={onConfirm}
-          disabled={disabled}
-          className="btn btn--danger flex-1 py-3"
-        >
-          تایید
-        </button>
+        {ispending ? (
+          <Loading />
+        ) : (
+          <button
+            onClick={onConfirm}
+            disabled={disabled}
+            className="btn btn--danger flex-1 py-3"
+          >
+            تایید
+          </button>
+        )}
       </div>
     </div>
   );

@@ -12,21 +12,32 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 // import CreateProjectForm from "./CreateProjectForm";
 import ToggleProjectStatus from "./ToggleProjectStatus.tsx";
 import { Link } from "react-router-dom";
-import { CategoryType, ProjectsTags, ProjectType } from "../../services/projectSrvice.ts";
+import {
+  CategoryType,
+  ProjectsTags,
+  ProjectType,
+} from "../../services/projectSrvice.ts";
 import { UserType } from "../../services/authServices.ts";
+import { useRemoveProject } from "./useRemoveProject.ts";
 
 interface ProjectProps {
-  project: ProjectType
-  index:number
-  tags:ProjectsTags[]
-  category?:CategoryType
-  freelancer?:UserType
+  project: ProjectType;
+  index: number;
+  tags: ProjectsTags[];
+  category?: CategoryType;
+  freelancer?: UserType;
 }
 
-function ProjectRow({ project, index ,tags,category,freelancer}:ProjectProps) {
+function ProjectRow({
+  project,
+  index,
+  tags,
+  category,
+  freelancer,
+}: ProjectProps) {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
-  // const { removeProject } = useRemoveProject();
+  const { removeProject, isDeleting } = useRemoveProject();
 
   return (
     <Table.Row>
@@ -59,7 +70,7 @@ function ProjectRow({ project, index ,tags,category,freelancer}:ProjectProps) {
               open={isEditOpen}
               onClose={() => setIsEditOpen(false)}
             >
-               <div>ویرایش پروژه</div>
+              <div>ویرایش پروژه</div>
               {/* <CreateProjectForm
                 projectToEdit={project}
                 onClose={() => setIsEditOpen(false)}
@@ -79,8 +90,11 @@ function ProjectRow({ project, index ,tags,category,freelancer}:ProjectProps) {
                 resourceName={project.title}
                 onClose={() => setIsDeleteOpen(false)}
                 onConfirm={() =>
-                 {}
+                  removeProject(project.id, {
+                    onSuccess: () => setIsDeleteOpen(false),
+                  })
                 }
+                ispending={isDeleting}
                 disabled={false}
               />
             </Modal>

@@ -1,9 +1,8 @@
 import { UserType } from "./authServices";
 import http from "./httpServices";
 
-
 export interface ProjectType {
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: "OPEN" | "CLOSED";
@@ -17,7 +16,7 @@ export interface ProjectType {
 export interface ProjectsTags {
   id: number;
   type: string;
-  project_id: number;
+  project_id: string;
 }
 export interface CategoryType {
   id: number;
@@ -31,7 +30,7 @@ export interface CategoryType {
 }
 // export interface ProposalType {
 //   id: number;
-//   projectId: number;
+//   projectId: string;
 //   price: number;
 //   duration: number;
 //   userId: string;
@@ -51,6 +50,19 @@ interface OwnerProjects {
   };
 }
 
+interface RemoveOwnerProject {
+  statusCode: number;
+  data: {
+    message: string;
+  };
+}
+
 export function getOwnerProjectsApi() {
-  return http.get<OwnerProjects>("/project/owner-projects").then(({ data }) => data.data);
+  return http
+    .get<OwnerProjects>("/project/owner-projects")
+    .then(({ data }) => data.data);
+}
+
+export function removeOwnerProjectApi(id: number) {
+  return http.delete<RemoveOwnerProject>(`/project/${id}`).then(({ data }) => data.data);
 }
