@@ -5,10 +5,15 @@ import { useMutation } from "@tanstack/react-query";
 import { getOpt } from "../../services/authServices";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+export interface  PhoneNumberForm {
+  phoneNumber: string;
+}
 
 function AuthContanir() {
   const [step, setStep] = useState<number>(1);
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const {register,handleSubmit,getValues}=useForm<PhoneNumberForm>()
   const {
     isPending,
     mutateAsync,
@@ -19,11 +24,10 @@ function AuthContanir() {
 
   
 
-  const sendOtpSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendOtpSubmit:SubmitHandler<PhoneNumberForm> = async (data) => {
     try {
-      const data = await mutateAsync({ phoneNumber });
-      toast.success(data.message);
+      const {message} = await mutateAsync(data);
+      toast.success(message);
       setStep(2);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -37,17 +41,16 @@ function AuthContanir() {
         return (
           <SendOTPForm
             isSendingOtp={isPending}
-            onSubmit={sendOtpSubmit}
-            phoneNumber={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onSubmit={handleSubmit(sendOtpSubmit)}
+            register={register}
           />
         );
       case 2:
         return (
           <ChaekOTPForm
-            onReSendOtp={sendOtpSubmit}
+            onReSendOtp={handleSubmit(sendOtpSubmit)}
             onBack={()=>setStep(s=>s-1)}
-            phoneNumber={phoneNumber}
+            phoneNumber={getValues("phoneNumber")}
             otpResponse={otpResponse}
           />
         );

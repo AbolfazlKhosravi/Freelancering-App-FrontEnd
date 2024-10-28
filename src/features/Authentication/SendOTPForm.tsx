@@ -1,25 +1,24 @@
-import TextFiels from "../../ui/TextFiels";
+import TextField from "../../ui/TextField";
 import Loading from "../../ui/Loading";
+import { UseFormRegister } from "react-hook-form";
+import { PhoneNumberForm } from "./AuthContainer";
 interface TypePropsSendOTPForm {
-  phoneNumber: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  register:UseFormRegister<PhoneNumberForm>
   isSendingOtp: boolean;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 function SendOTPForm({
   onSubmit,
   isSendingOtp,
-  phoneNumber,
-  onChange,
+  register
 }: TypePropsSendOTPForm) {
   return (
     <div>
       <form onSubmit={onSubmit} className="space-y-8">
-        <TextFiels
+        <TextField<PhoneNumberForm>
           label="شماره موبایل"
           name="phoneNumber"
-          value={phoneNumber}
-          onChange={onChange}
+          register={register}
         />
         {isSendingOtp ? (
           <Loading />
