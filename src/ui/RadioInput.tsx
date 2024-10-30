@@ -35,7 +35,7 @@ function RadioInput<T extends FieldValues>({
         id={id}
         value={value}
         {...register(name, validationSchema)}
-        checked={watch(name) === value}
+        checked={Number(watch(name)) === value}
       />
       <label htmlFor={id}>{label}</label>
     </div>

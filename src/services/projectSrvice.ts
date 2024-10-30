@@ -63,6 +63,6 @@ export function getOwnerProjectsApi() {
     .then(({ data }) => data.data);
 }
 
-export function removeOwnerProjectApi(id: number) {
+export function removeOwnerProjectApi(id: string) {
   return http.delete<RemoveOwnerProject>(`/project/${id}`).then(({ data }) => data.data);
 }

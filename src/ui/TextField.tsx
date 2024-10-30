@@ -6,6 +6,10 @@ type ValidationSchema = {
     value: RegExp;
     message: string;
   };
+  minLength?:{
+    value: number,
+    message: string,
+  },
 };
 
 type TextField<T extends FieldValues> = {
