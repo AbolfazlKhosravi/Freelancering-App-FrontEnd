@@ -1,58 +1,38 @@
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import useCategories from "../../hooks/useCategories";
 import TextField from "../../ui/TextField";
 import RHFSelect from "../../ui/RHFSelect";
-import TagsInput from 'react-tagsinput'
-import { Value } from "react-multi-date-picker";
+import TagsInput from "react-tagsinput";
 import DatePickerField from "../../ui/DatePickerField";
 
 interface CreateProjectForm {
-  onClose:()=>void
+  onClose: () => void;
 }
 interface CreateProject {
   title: string;
   description: string;
   category: number;
   budget: number;
-  deadline: string;
+  deadline: Date | string;
   tags: string[];
 }
 function CreateProjectForm({ onClose }: CreateProjectForm) {
-
   const {
     register,
     formState: { errors },
-    handleSubmit
+    control,
+    handleSubmit,
   } = useForm<CreateProject>();
 
-  const [date, setDate] = useState<Value>(new Date());
-  const [tags, setTags] = useState<string[]>([]);
   const { categories } = useCategories();
 
-  const onSubmit:SubmitHandler<CreateProject> = (data) => {
+  const onSubmit: SubmitHandler<CreateProject> = (data) => {
+    data.deadline = new Date(data.deadline).toISOString();
     console.log(data);
-    
-    // const newProject = {
-    //   ...data,
-    //   deadline: new Date(date).toISOString(),
-    //   tags,
-    // };
 
-    // if (isEditSession) {
-    //   editProject(
-    //     { id: editId, newProject },
-    //     {
-    //       onSuccess: () => {
-            onClose();
-    //         reset();
-    //       },
-    //     }
-    //   );
-    // } else {
     //   createProject(newProject, {
     //     onSuccess: () => {
-    //       onClose();
+    onClose();
     //       reset();
     //     },
     //   });
@@ -102,20 +82,65 @@ function CreateProjectForm({ onClose }: CreateProjectForm) {
         required
         name="category"
         register={register}
+        validationSchema={{
+          required: "یک دسته بندی ایجاد کنید",
+        }}
         options={categories}
+        errors={errors}
       />
-      <div>
-        <label className="mb-2 block text-secondary-700">تگ</label>
-        <TagsInput value={tags} onChange={setTags} inputProps={{ placeholder: 'تگ اضافه کنید' }} />
-      </div>
-      <DatePickerField date={date} setDate={setDate} label="ددلاین" required/>
+      <Controller
+        name="tags"
+        control={control}
+        defaultValue={[]}
+        rules={{
+          required: "حداقل یک تگ اضافه کنید",
+        }}
+        render={({ field }) => (
+          <div>
+            <label className="mb-2 block text-secondary-700">تگ</label>
+            <TagsInput
+              {...field}
+              inputProps={{ placeholder: "تگ اضافه کنید" }}
+            />
+            {errors && errors["tags"] && (
+              <span className="text-error block text-sm mt-2">
+                {errors["tags"]?.message as string}
+              </span>
+            )}
+          </div>
+        )}
+      />
+      <Controller
+        name="deadline"
+        control={control}
+        defaultValue={new Date()}
+        rules={{
+          required: "تاریخ ددلاین ضروری است",
+        }}
+        render={({ field: { value, onChange } }) => (
+          <>
+            {" "}
+            <DatePickerField
+              date={value}
+              setDate={onChange}
+              label="ددلاین"
+              required
+            />
+            {errors && errors["deadline"] && (
+              <span className="text-error block text-sm mt-2">
+                {errors["deadline"]?.message as string}
+              </span>
+            )}
+          </>
+        )}
+      />
       <div className="!mt-8">
         {/* {isCreating  ? (
           <Loading />
         ) : ( */}
-          <button type="submit" className="btn btn--primary w-full">
-            تایید
-          </button>
+        <button type="submit" className="btn btn--primary w-full">
+          تایید
+        </button>
         {/* )} */}
       </div>
     </form>
