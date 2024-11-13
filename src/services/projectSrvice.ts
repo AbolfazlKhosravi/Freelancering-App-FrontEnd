@@ -1,3 +1,4 @@
+import { CreateProject } from "../features/projects/CreateProjectForm";
 import { UserType } from "./authServices";
 import http from "./httpServices";
 
@@ -57,6 +58,13 @@ interface RemoveOwnerProject {
   };
 }
 
+interface CreateProjectApi {
+  statusCode: number;
+  data: {
+    message: string;
+  };
+}
+
 export function getOwnerProjectsApi() {
   return http
     .get<OwnerProjects>("/project/owner-projects")
@@ -65,4 +73,8 @@ export function getOwnerProjectsApi() {
 
 export function removeOwnerProjectApi(id: string) {
   return http.delete<RemoveOwnerProject>(`/project/${id}`).then(({ data }) => data.data);
+}
+
+export function createProjectApi(data:CreateProject) {
+  return http.post<CreateProjectApi>(`/project/add`, data).then(({ data }) => data.data);
 }

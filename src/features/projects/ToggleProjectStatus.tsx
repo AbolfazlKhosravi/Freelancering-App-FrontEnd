@@ -16,7 +16,7 @@ function ToggleProjectStatus({ project }:ToggleProjectStatus) {
           <span
             className={` inline-block h-4 w-4 transform rounded-full bg-secondary-0 transition-transform`}
           />
-          {status}
+          {status==="OPEN"?"باز":"بسته"}
         </div>
       </div>
     </div>

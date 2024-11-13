@@ -4,11 +4,13 @@ import TextField from "../../ui/TextField";
 import RHFSelect from "../../ui/RHFSelect";
 import TagsInput from "react-tagsinput";
 import DatePickerField from "../../ui/DatePickerField";
+import useCreateProject from "./useCreateProject";
+import Loading from "../../ui/Loading";
 
 interface CreateProjectForm {
   onClose: () => void;
 }
-interface CreateProject {
+export interface CreateProject {
   title: string;
   description: string;
   category: number;
@@ -22,21 +24,23 @@ function CreateProjectForm({ onClose }: CreateProjectForm) {
     formState: { errors },
     control,
     handleSubmit,
+    reset,
   } = useForm<CreateProject>();
+
+  const { isCreating, createProject } = useCreateProject();
 
   const { categories } = useCategories();
 
   const onSubmit: SubmitHandler<CreateProject> = (data) => {
+    
     data.deadline = new Date(data.deadline).toISOString();
-    console.log(data);
 
-    //   createProject(newProject, {
-    //     onSuccess: () => {
-    onClose();
-    //       reset();
-    //     },
-    //   });
-    // }
+    createProject(data, {
+      onSuccess: () => {
+        onClose();
+        reset();
+      },
+    });
   };
 
   return (
@@ -135,13 +139,13 @@ function CreateProjectForm({ onClose }: CreateProjectForm) {
         )}
       />
       <div className="!mt-8">
-        {/* {isCreating  ? (
+        {isCreating ? (
           <Loading />
-        ) : ( */}
-        <button type="submit" className="btn btn--primary w-full">
-          تایید
-        </button>
-        {/* )} */}
+        ) : (
+          <button type="submit" className="btn btn--primary w-full">
+            تایید
+          </button>
+        )}
       </div>
     </form>
   );
