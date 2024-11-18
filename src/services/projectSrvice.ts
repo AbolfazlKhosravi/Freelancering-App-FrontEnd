@@ -65,6 +65,18 @@ interface CreateProjectApi {
   };
 }
 
+interface editProjectApiInputs {
+  id:string
+  data:CreateProject
+}
+
+interface editProjectApi {
+  statusCode: number;
+  data: {
+    message: string;
+  };
+}
+
 export function getOwnerProjectsApi() {
   return http
     .get<OwnerProjects>("/project/owner-projects")
@@ -77,4 +89,10 @@ export function removeOwnerProjectApi(id: string) {
 
 export function createProjectApi(data:CreateProject) {
   return http.post<CreateProjectApi>(`/project/add`, data).then(({ data }) => data.data);
+}
+
+export function editProjectApi({ id, data }:editProjectApiInputs) {
+  return http
+    .patch<editProjectApi>(`/project/update/${id}`, data)
+    .then(({ data }) => data.data);
 }

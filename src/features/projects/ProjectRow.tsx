@@ -19,6 +19,7 @@ import {
 } from "../../services/projectSrvice.ts";
 import { UserType } from "../../services/authServices.ts";
 import { useRemoveProject } from "./useRemoveProject.ts";
+import CreateProjectForm from "./CreateProjectForm.tsx";
 
 interface ProjectProps {
   project: ProjectType;
@@ -71,10 +72,11 @@ function ProjectRow({
               onClose={() => setIsEditOpen(false)}
             >
               <div>ویرایش پروژه</div>
-              {/* <CreateProjectForm
+              <CreateProjectForm
                 projectToEdit={project}
+                tags={tags}
                 onClose={() => setIsEditOpen(false)}
-              /> */}
+              />
             </Modal>
           </>
           <>

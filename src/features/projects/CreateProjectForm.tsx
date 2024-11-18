@@ -6,9 +6,14 @@ import TagsInput from "react-tagsinput";
 import DatePickerField from "../../ui/DatePickerField";
 import useCreateProject from "./useCreateProject";
 import Loading from "../../ui/Loading";
+import { ProjectsTags, ProjectType } from "../../services/projectSrvice";
+import useEditProject from "./useEditProject";
+
 
 interface CreateProjectForm {
   onClose: () => void;
+  projectToEdit?: ProjectType;
+  tags?: ProjectsTags[];
 }
 export interface CreateProject {
   title: string;
@@ -18,29 +23,61 @@ export interface CreateProject {
   deadline: Date | string;
   tags: string[];
 }
-function CreateProjectForm({ onClose }: CreateProjectForm) {
+function CreateProjectForm({
+  onClose,
+  projectToEdit,
+  tags: tagsInput,
+}: CreateProjectForm) {
+  let isEditSession: boolean = false;
+  let editValues: CreateProject | undefined = undefined;
+  if (projectToEdit?.id) {
+    isEditSession = true;
+    const { title, description, budget, deadline, categoryId } = projectToEdit;
+    
+    editValues = {
+      title,
+      description,
+      budget,
+      category: categoryId,
+      deadline: new Date(deadline),
+      tags: tagsInput?.map((tag) => tag.type) || [],
+    };
+  }
+
   const {
     register,
     formState: { errors },
     control,
     handleSubmit,
     reset,
-  } = useForm<CreateProject>();
+  } = useForm<CreateProject>({ defaultValues: editValues });
 
   const { isCreating, createProject } = useCreateProject();
+  const { editProject } = useEditProject();
 
   const { categories } = useCategories();
 
   const onSubmit: SubmitHandler<CreateProject> = (data) => {
-    
     data.deadline = new Date(data.deadline).toISOString();
 
-    createProject(data, {
-      onSuccess: () => {
-        onClose();
-        reset();
-      },
-    });
+    if (isEditSession && projectToEdit?.id) {
+      editProject(
+        { id: projectToEdit.id, data },
+        {
+          onSuccess: () => {
+            onClose();
+            reset();
+          },
+        }
+      );
+    } else {
+      createProject(data, {
+        onSuccess: () => {
+          onClose();
+          reset();
+        },
+      });
+    }
   };
 
   return (
