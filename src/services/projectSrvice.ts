@@ -66,8 +66,8 @@ interface CreateProjectApi {
 }
 
 interface editProjectApiInputs {
-  id:string
-  data:CreateProject
+  id: string;
+  data: CreateProject;
 }
 
 interface editProjectApi {
@@ -84,15 +84,60 @@ export function getOwnerProjectsApi() {
 }
 
 export function removeOwnerProjectApi(id: string) {
-  return http.delete<RemoveOwnerProject>(`/project/${id}`).then(({ data }) => data.data);
+  return http
+    .delete<RemoveOwnerProject>(`/project/${id}`)
+    .then(({ data }) => data.data);
 }
 
-export function createProjectApi(data:CreateProject) {
-  return http.post<CreateProjectApi>(`/project/add`, data).then(({ data }) => data.data);
+export function createProjectApi(data: CreateProject) {
+  return http
+    .post<CreateProjectApi>(`/project/add`, data)
+    .then(({ data }) => data.data);
 }
 
-export function editProjectApi({ id, data }:editProjectApiInputs) {
+export function editProjectApi({ id, data }: editProjectApiInputs) {
   return http
     .patch<editProjectApi>(`/project/update/${id}`, data)
     .then(({ data }) => data.data);
+}
+
+// Change project status
+interface ToggleProjectStatusApiInputs {
+  id: string;
+  data: {
+    status: "OPEN" | "CLOSED";
+  };
+}
+interface ToggleProjectStatusApi {
+  statusCode: number;
+  data: {
+    message: string;
+  };
+}
+
+export function toggleProjectStatusApi({
+  id,
+  data,
+}: ToggleProjectStatusApiInputs) {
+  //{status:"OPEN"}
+  return http
+    .patch<ToggleProjectStatusApi>(`/project/${id}`, data)
+    .then(({ data }) => data.data);
+}
+
+// get project
+
+interface GetProjectApi {
+  statusCode: number;
+  data: {
+    fullProjectApi: {
+      projectInfo: ProjectType;
+      proposalList: [];
+    };
+  };
+}
+
+export function getProjectApi(id: string) {
+  //{status:"OPEN"}
+  return http.get<GetProjectApi>(`/project/${id}`).then(({ data }) => data.data);
 }
