@@ -1,8 +1,7 @@
 import { HiOutlineUser } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import Logout from "../features/Authentication/Logout";
-// import DarkModeToggle from "./DarkModeToggle";
-// import Logout from "../features/authentication/Logout";
+import DarkModeToggle from "./DarkModeToggle";
 
 function HeaderMenu() {
   return (
@@ -13,7 +12,7 @@ function HeaderMenu() {
         </Link>
       </li>
       <li className="flex">
-        {/* <DarkModeToggle /> */}
+        <DarkModeToggle />
       </li>
       <li className="flex">
         <Logout />

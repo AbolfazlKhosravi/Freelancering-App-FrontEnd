@@ -1,5 +1,5 @@
 import { HiOutlineX } from "react-icons/hi";
-import useOutsideClick from "./useOutsideClick";
+import useOutsideClick from "../hooks/useOutsideClick";
 // import useOutsideClick from "../hooks/useOutsideClick.js";
 interface Modal {
   open: boolean;
