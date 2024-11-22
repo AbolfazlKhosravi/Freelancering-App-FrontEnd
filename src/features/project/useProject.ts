@@ -12,7 +12,7 @@ export default function useProject() {
     retry: false,
   });
 
-  const { fullProjectApi:project } = data || {};
+  const { projectInfoAndProposals:project } = data || {};
 
   return { isLoading, project };
 }

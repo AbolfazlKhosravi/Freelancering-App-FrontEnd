@@ -16,7 +16,7 @@ interface RHFSelect<T extends FieldValues> {
   label:string
   name:Path<T>
   register: UseFormRegister<T>
-  validationSchema:ValidationSchema
+  validationSchema?:ValidationSchema
   options: { label: string; value:number }[]
   required: boolean;
   errors?: FieldErrors<T>;

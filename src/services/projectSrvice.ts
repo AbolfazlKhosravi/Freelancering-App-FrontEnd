@@ -29,15 +29,17 @@ export interface CategoryType {
   icon_sm: string;
   icon_lg: string;
 }
-// export interface ProposalType {
-//   id: number;
-//   projectId: string;
-//   price: number;
-//   duration: number;
-//   userId: string;
-//   status: 0 | 1 | 2;
-//   createdAt: Date;
-// }
+export interface Proposal {
+  id: number;
+  projectId: string;
+  price: number;
+  duration: number;
+  description?: string;
+  userId: string;
+  userName: string;
+  status: 0 | 1 | 2;
+  createdAt: Date;
+}
 
 interface OwnerProjects {
   statusCode: number;
@@ -130,14 +132,16 @@ export function toggleProjectStatusApi({
 interface GetProjectApi {
   statusCode: number;
   data: {
-    fullProjectApi: {
+    projectInfoAndProposals: {
       projectInfo: ProjectType;
-      proposalList: [];
+      proposalList: Proposal[];
     };
   };
 }
 
 export function getProjectApi(id: string) {
   //{status:"OPEN"}
-  return http.get<GetProjectApi>(`/project/${id}`).then(({ data }) => data.data);
+  return http
+    .get<GetProjectApi>(`/project/${id}`)
+    .then(({ data }) => data.data);
 }
