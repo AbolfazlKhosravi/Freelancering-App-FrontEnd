@@ -1,4 +1,6 @@
+import UserAvatar from "../features/Authentication/UserAvatar";
 import useUser from "../features/Authentication/useUser";
+import HeaderMenu from "./HeaderMenu";
 
 function Header() {
   const { isLoading } = useUser();
@@ -10,9 +12,8 @@ function Header() {
       ${isLoading ? "blur-sm opacity-50" : ""}
       `}
       >
-        <div>header</div>
-        {/* <UserAvatar /> */}
-        {/* <HeaderMenu /> */}
+        <UserAvatar />
+        <HeaderMenu />
       </div>
     </div>
   );

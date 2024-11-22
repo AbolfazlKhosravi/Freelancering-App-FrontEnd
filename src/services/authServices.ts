@@ -55,7 +55,7 @@ interface ReturnCompleteProfile {
 interface ReturnGetUser {
   statusCode: number;
   data: {
-    user: UserFullInfo;
+    userFullInfo: UserFullInfo;
   };
 }
 
@@ -81,4 +81,14 @@ export function completeProfile(data: {
 }
 export function getUser() {
   return http.get<ReturnGetUser>("/user/profile").then(({ data }) => data.data);
+}
+
+interface LogoutApi {
+  statusCode: number;
+  data: {
+    message: string;
+  };
+}
+export function logoutApi() {
+  return http.post<LogoutApi>("/user/logout").then(({ data }) => data.data);
 }
