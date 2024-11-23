@@ -37,3 +37,15 @@ interface GetProposalsApi {
 export function getProposalsApi() {
   return http.get<GetProposalsApi>(`/proposal/list`).then(({ data }) => data.data);
 }
+
+interface CreateProposalApiInputs{
+  description: string;
+  price: number;
+  duration: number;
+  projectId:string;
+}
+
+
+export function createProposalApi(data:CreateProposalApiInputs) {
+  return http.post<ChangeProposalStatusApi>(`/proposal/add`, data).then(({ data }) => data.data);
+}

@@ -5,7 +5,7 @@ import toLocalDateShort from "../../../utils/toLocalDateShort";
 import { MdAssignmentAdd } from "react-icons/md";
 import { useState } from "react";
 import Modal from "../../../ui/Modal";
-// import CreateProposal from "../../proposals/CreateProposal";
+import CreateProposal from "../../proposals/CreateProposal.tsx";
 import { ProjectType } from "../../../services/projectSrvice";
 
 const projectStatus = {
@@ -45,11 +45,10 @@ function ProjectRow({ project, index }: ProjectRow) {
           onClose={() => setOpen(false)}
           title={`درخواست انجام پروژه ${title}`}
         >
-          <div>پروپوزال</div>
-          {/* <CreateProposal
+          <CreateProposal
             projectId={project.id}
             onClose={() => setOpen(false)}
-          /> */}
+          />
         </Modal>
         <button onClick={() => setOpen(true)}>
           <MdAssignmentAdd className="w-5 h-5 text-primary-900" />
