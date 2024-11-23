@@ -1,11 +1,11 @@
-// import ProjectHeader from "../features/freelnacer/projects/ProjectsHeader";
-// import ProjectTable from "../features/freelnacer/projects/ProjectsTable";
+import ProjectsHeader from "../features/freelancer/projects/ProjectsHeader";
+import ProjectsTable from "../features/freelancer/projects/ProjectsTable";
 
 function SubmittedProjects() {
   return (
     <div>
-      {/* <ProjectHeader /> */}
-      {/* <ProjectTable /> */}
+      <ProjectsHeader />
+      <ProjectsTable />
     </div>
   );
 }

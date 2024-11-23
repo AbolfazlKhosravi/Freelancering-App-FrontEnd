@@ -162,3 +162,15 @@ export function getProjectApi(id: string) {
     .get<GetProjectApi>(`/project/${id}`)
     .then(({ data }) => data.data);
 }
+
+
+interface GetProjectsApi {
+  statusCode: number;
+  data: {
+    projects: ProjectType[];
+  };
+}
+
+export function getProjectsApi() {
+  return http.get<GetProjectsApi>(`/project/list`).then(({ data }) => data.data);
+}
