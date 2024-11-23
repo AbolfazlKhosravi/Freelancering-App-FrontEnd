@@ -8,7 +8,7 @@ const colors = {
 
 interface Stat {
   icon: JSX.Element;
-  value: number;
+  value: number|string;
   title: string;
   color: "primary" | "green" | "orange";
 }
