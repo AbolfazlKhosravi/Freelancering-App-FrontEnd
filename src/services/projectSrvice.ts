@@ -52,6 +52,15 @@ interface OwnerProjects {
     };
   };
 }
+interface BasixOwnerProjectsInfo  {
+  statusCode: number;
+  data: {
+    basicProjectsInfo: {
+      ownerProjects: ProjectType[];
+      proposalsCount:number,
+    };
+  };
+}
 
 interface RemoveOwnerProject {
   statusCode: number;
@@ -84,6 +93,14 @@ export function getOwnerProjectsApi() {
     .get<OwnerProjects>("/project/owner-projects")
     .then(({ data }) => data.data);
 }
+
+
+export function getBasicOwnerProjectsApi() {
+  return http
+    .get<BasixOwnerProjectsInfo>("/project/owner-projects-basic-info")
+    .then(({ data }) => data.data);
+}
+
 
 export function removeOwnerProjectApi(id: string) {
   return http
